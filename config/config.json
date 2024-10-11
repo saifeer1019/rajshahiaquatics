@@ -1,0 +1,23 @@
+{
+    "development": {
+      "username": "natunpro_editor",
+      "password": "Kodaline44",
+      "database": "natunpro_aquaRajshahi",
+      "host": "bd08.exonhost.com",
+      "dialect": "mysql"
+    },
+    "test": {
+      "username": "natunpro_editor",
+      "password": "Kodaline44",
+      "database": "natunpro_aquaRajshahi",
+      "host": "bd08.exonhost.com",
+      "dialect": "mysql"
+    },
+    "production": {
+      "username": "natunpro_editor",
+      "password": "Kodaline44",
+      "database": "natunpro_aquaRajshahi",
+      "host": "bd08.exonhost.com",
+      "dialect": "mysql"
+    }
+  }
