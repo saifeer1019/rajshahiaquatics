@@ -86,6 +86,7 @@ const [subscribed, setSubscribed] = useState(false);
       {/* BOTTOM */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-8 mt-16">
         <div className="">© 2023 Rajshahi Aquatics</div>
+        <div>Developed by <Link href="https://www.saifeerahman.com" className="text-blue-400 hover:text-blue-600">Saifee Rahman</Link> </div> 
         <div className="flex flex-col gap-8 md:flex-row">
           <div className="">
             <span className="text-gray-500 mr-4">Language</span>
