@@ -20,7 +20,7 @@ const Filter = () => {
     replace(`${pathname}?${params.toString()}`);
   };
 
-  const category = ["Guppy", "Molly", "Tetra", "Algae-eater", "Shrimp", "Beta", "Goldfish", "Plants"   ]
+  const category = ["Guppy",  "Shrimp", "Molly", "Aquarium Plants", "Aquarium Equipment", "Algae Eater"   ]
 
   return (
     <div className="mt-12 flex justify-between">
@@ -66,7 +66,7 @@ const Filter = () => {
  
           {category.map((item)=>(
   
-            <option value={item}>{item}</option>
+            <option value={item.toLowerCase().replace(" ", "-")}>{item}</option>
  
           ))}
          

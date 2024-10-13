@@ -102,16 +102,16 @@ const Add = ({
         {!isInCart ? ( 
           <button
             onClick={handleAddToCart}
-            className="w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-lama hover:text-white"
+            className="transition-transform duration-300 ease-in-out w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-lama hover:text-white active:scale-1000"
           >
             Add to Cart
           </button>
         ) : ( // If the item IS in the cart
           <button 
             onClick={handleRemoveFromCart} // Pass the function reference
-            className="w-36 text-sm rounded-3xl ring-1 ring-lama bg-lama text-white py-2 px-4"
+            className="transition-transform duration-300 ease-in-out w--fit text-sm rounded-3xl ring-1 ring-lama bg-lama text-white py-2 px-4 active:scale-1000"
           >
-            Remove
+            Remove from Cart
           </button>
         )}
       </div>

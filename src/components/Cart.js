@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { setCartItems } from '../redux/cartSlice'; 
 import Link from 'next/link';
 
-
 export default function Cart() {
     const dispatch = useDispatch();
     const cartItems = useSelector((state) => state.cart.cartItems);
@@ -36,10 +35,10 @@ export default function Cart() {
     };
 
     return (
-        <div className="w-max absolute p-4 rounded-md shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white top-12 right-16 flex flex-col gap-6 z-20">
+        <div className="w-96 h-[50vh] absolute p-4 rounded-md shadow-[0_3px_10px_rgb(0,0,0,0.2)]  bg-white top-12 right-16 flex flex-col z-20">
             <h2 className="text-xl">Shopping Cart</h2>
             {/* LIST */}
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-8 overflow-y-auto flex-grow scrollbar-hide">
                 {/* ITEM */}
                 {cartItems.map((cartItem) => (
                     <div className="flex gap-4" key={`${cartItem.productName} ${cartItem.variant}`}>
@@ -78,7 +77,7 @@ export default function Cart() {
                 ))}
             </div>
             {/* BOTTOM */}
-            <div className="">
+            <div className="mt-auto">
                 <div className="flex items-center justify-between font-semibold">
                     <span className="">Subtotal: Tk. {totalPrice.toFixed(2)}</span>
                 </div>
@@ -86,14 +85,13 @@ export default function Cart() {
                     Shipping and taxes calculated at checkout.
                 </p>
                 <div className="flex justify-end text-sm">
-                  
-                <Link href="/checkout">
-                <button
-                    className="rounded-md py-3 px-4 bg-black text-white disabled:cursor-not-allowed disabled:opacity-75"
-                >
-                    Checkout
-                </button>
-            </Link>
+                    <Link href="/checkout">
+                        <button
+                            className="rounded-md py-3 px-4 bg-black text-white disabled:cursor-not-allowed disabled:opacity-75"
+                        >
+                            Checkout
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>

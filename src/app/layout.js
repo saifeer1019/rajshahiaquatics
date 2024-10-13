@@ -17,8 +17,8 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "Aquafarm",
-  description: "Aquafarm",
+  title: "Rajshahi Aquatics",
+  description: "Rajshahi Aquatics",
 };
 
 export default function RootLayout({ children }) {

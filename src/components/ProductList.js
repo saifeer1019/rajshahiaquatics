@@ -18,7 +18,6 @@ const ProductList = async ({
   searchParams,
 
   isHomepage
-
 }) => {
   const wixClient = await wixClientServer();
 
@@ -75,95 +74,104 @@ const ProductList = async ({
 
   const res = await productQuery.find();
 
+  // Fetch reviews for each product
+  const fetchReviews = async (productId) => {
+    const response = await fetch(`http://localhost:3000/api/reviews/${productId}`);
+    if (response.ok) {
+      const data = await response.json();
+      return data; // Return the reviews data
+    } else {
+      console.error('Failed to fetch reviews for product ID:', productId);
+      return [];
+    }
+  };
+
+  // Fetch reviews for all products
+  const reviewsData = await Promise.all(
+    res.items.map(async (product) => {
+      const reviews = await fetchReviews(product._id);
+      return { productId: product._id, reviews };
+    })
+  );
+
+  // Create a map of reviews for easy access
+  const reviewsMap = reviewsData.reduce((acc, { productId, reviews }) => {
+    acc[productId] = reviews;
+    return acc;
+  }, {});
+
   return (
     <div className="mt-12 flex gap-x-8 gap-y-16 flex-start flex-wrap">
 
-      {res.items.map((product) => (
-        <div className="w-full flex flex-col gap-4 sm:w-[45%] lg:w-[22%]"
-        key={product._id}> 
-        <Link
+      {res.items.map((product) => {
+        const productReviews = reviewsMap[product._id] || [];
+        const averageRating = productReviews.length > 0
+          ? productReviews.reduce((acc, review) => acc + review.reviewScore, 0) / productReviews.length
+          : 0;
 
-          href={"/" + product.slug}
+        return (
+          <div className="w-full flex flex-col gap-4 sm:w-[45%] lg:w-[22%]" key={product._id}>
+            <Link href={"/" + product.slug}>
+              <div className="relative w-full h-80">
+                <Image
+                  src={product.media?.mainMedia?.image?.url || "/product.png"}
+                  alt=""
+                  fill
+                  sizes="25vw"
+                  className="absolute object-cover rounded-md z-10 hover:opacity-0 transition-opacity easy duration-500"
+                />
+                {product.media?.items && (
+                  <Image
+                    src={product.media?.items[1]?.image?.url || "/product.png"}
+                    alt=""
+                    fill
+                    sizes="25vw"
+                    className="absolute object-cover rounded-md"
+                  />
+                )}
+              </div>
+              <div className="flex justify-between mt-2">
+                <span className="font-medium">{product.name}</span>
+                <span className="font-semibold">Tk. {product.price?.price}</span>
+              </div>
 
-        >
-          <div className="relative w-full h-80">
-            <Image
-              src={product.media?.mainMedia?.image?.url || "/product.png"}
-              alt=""
-              fill
+              {product.additionalInfoSections && (
+                <div
+                  className="text-sm text-gray-500"
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(
+                      product.additionalInfoSections.find(
+                        (section) => section.title === "shortDesc"
+                      )?.description || ""
+                    ),
+                  }}
+                ></div>
+              )}
 
-              sizes="25vw"
-              className="absolute object-cover rounded-md z-10 hover:opacity-0 transition-opacity easy duration-500"
+              {/* Reviews Bar */}
+              <div className="flex items-center mt-1">
+                {Array.from({ length: 5 }, (_, index) => (
+                  index < Math.round(averageRating) ? (
+                    <Star key={index} sx={{ color: '#f69f29' }} />
+                  ) : (
+                    <StarBorder key={index} sx={{ color: '#f69f29' }} />
+                  )
+                ))}
+                <span className="ml-2 text-sm">({productReviews.length} reviews)</span>
+              </div>
+            </Link>
+            <AddToCart
+              productName={product.name}
+              price={product.price?.price}
+              image={product.media?.mainMedia?.image?.url || "/product.png"}
             />
-
-            {product.media?.items && (
-
-              <Image
-                src={product.media?.items[1]?.image?.url || "/product.png"}
-
-                alt=""
-
-                fill
-
-                sizes="25vw"
-
-                className="absolute object-cover rounded-md"
-
-              />
-
-            )}
-
           </div>
-          <div className="flex justify-between mt-2">
-            <span className="font-medium">{product.name}</span>
-            <span className="font-semibold">Tk. {product.price?.price}</span>
-          </div>
-
-          {product.additionalInfoSections && (
-            <div
-              className="text-sm text-gray-500"
-              dangerouslySetInnerHTML={{
-
-                __html: DOMPurify.sanitize(
-
-                  product.additionalInfoSections.find(
-
-                    (section) => section.title === "shortDesc"
-
-                  )?.description || ""
-
-                ),
-              }}
-            ></div>
-
-          )}
-          <div className="flex items-center mt-1">
-
-            {Array.from({ length: 5 }, (_, index) => (
-
-              index < (product.rating || 4) ? (
-                <Star key={index} sx={{ color: '#f69f29' }} /> // Set filled star color to #f69f29
-              ) : (
-                <StarBorder key={index} sx={{ color: '#f69f29' }} /> // Set unfilled star color to #f69f29
-
-              )
-            ))}
-
-          </div>
-        </Link>
-        <AddToCart 
-        productName={product.name}
-
-        price={product.price?.price}
-        image={product.media?.mainMedia?.image?.url || "/product.png"} />
-
-        </div>
-      ))}
+        );
+      })}
      {!isHomepage && (
 
         <Pagination
           currentPage={res.currentPage || 0}
-
           hasPrev={res.hasPrev()}
           hasNext={res.hasNext()}
         />

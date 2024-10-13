@@ -3,7 +3,7 @@ const ProductList = dynamic(() => import('@/components/ProductList'), { ssr: fal
 import Image from "next/image";
 import { Suspense } from "react";
 import Slider from "@/components/Slider";
-import Categories from "@/components/Catergories";
+import Categories from "@/components/Categories";
 import Skeleton from "@/components/Skeleton";
 
 
@@ -26,9 +26,10 @@ export default function Home() {
           Categories
         </h1>
         <Suspense fallback={<Skeleton/>}> {/* Added loading fallback */}
-          <Categories />
+          <Categories className="relative" />
         </Suspense>
       </div>
+    
     </div>
   );
 }

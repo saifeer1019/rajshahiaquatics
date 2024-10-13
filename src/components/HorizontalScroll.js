@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useRef, useEffect } from 'react';
+import { useTransform, useScroll } from 'framer-motion';
 
 const useHorizontalScroll = () => {
   const elRef = useRef(null); // Removed TypeScript type
@@ -11,7 +12,7 @@ const useHorizontalScroll = () => {
         if (e.deltaY === 0) return;
         e.preventDefault();
         el.scrollTo({
-          left: el.scrollLeft + e.deltaY,
+          left: el.scrollLeft + e.deltaY * 0.5, // Increased scrolling speed
           behavior: 'smooth'
         });
       };

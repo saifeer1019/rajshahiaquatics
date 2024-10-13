@@ -7,10 +7,7 @@ import { addToCart, removeFromCart, setCartItems } from '../redux/cartSlice'; //
 export default function AddToCart({ 
     productName, 
     variant = "", 
-
     quantity = 1, 
- 
-  
     price, 
     image 
 }) {
@@ -59,16 +56,16 @@ export default function AddToCart({
             {!isInCart ? ( // If the item is NOT in the cart
                 <button 
                     onClick={handleAddToCart} // Pass the function reference
-                    className="rounded-2xl ring-1 ring-lama text-lama w-max py-2 px-4 text-xs hover:bg-lama hover:text-white"
+                    className="transition-transform duration-300 ease-in-out rounded-2xl ring-1 ring-lama text-lama w-max py-2 px-4 text-xs hover:bg-lama hover:text-white active:scale-100"
                 >
-                    Add to Cart
+                    <span className="transition-transform duration-300 ease-in-out transform scale-100 active:scale-0">Add to Cart</span>
                 </button>
             ) : ( // If the item IS in the cart
                 <button 
                     onClick={handleRemoveFromCart} // Pass the function reference
-                    className="rounded-2xl ring-1 ring-red-500 text-red-500 w-max py-2 px-4 text-xs hover:bg-red-500 hover:text-white"
+                    className="transition-transform duration-1000 ease-in-out rounded-2xl ring-1 ring-red-500 text-red-500 w-max py-2 px-4 text-xs hover:bg-red-500 hover:text-white active:scale-100"
                 >
-                    Remove from Cart
+                    <span className="transition-transform duration-1000 ease-in-out transform scale-100 active:scale-0">Remove from Cart</span>
                 </button>
             )}
         </div>

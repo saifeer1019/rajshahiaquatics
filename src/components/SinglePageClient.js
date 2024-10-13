@@ -41,10 +41,10 @@ const SinglePageClient = ({ product, variants }) => {
     const fetchReviews = async () => {
         const response = await fetch(`/api/reviews/${product._id}`);
         if (response.ok) {
-            console.log("fetching reviews");
+            console.log("Fetching reviews for product ID:", product._id); // Log the product ID being fetched
             const data = await response.json();
+            console.log("Reviews response data:", data); // Log the reviews data
             setReviews(data);
-            console.log(data);
             // Calculate average rating
             const avgRating = data.length > 0 ? data.reduce((acc, review) => acc + review.reviewScore, 0) / data.length : 0;
             setAverageRating(avgRating);
@@ -182,16 +182,27 @@ const SinglePageClient = ({ product, variants }) => {
                 <div className="h-[2px] bg-gray-100" />
                 
                 <h1 className="text-2xl">User Reviews</h1>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 ">
                     {reviews.length > 0 ? (
                         reviews.map((review, index) => (
-                            <div key={index} className="border p-2 rounded-md">
-                                <strong>{review.userName}</strong> - {review.reviewScore} Stars
+                            <div key={index} className="border p-2 rounded-md sm:h-24">
+                            <div className=" sm:flex sm:justify-star sm:mb-2 ">
+                            <div className="w-fit"><strong>{review.userName}</strong> - </div>
+                                 <div className="w-fit mb-2 sm:mb-0">
+                                {[...Array(review.reviewScore)].map((_, i) => (
+                                    <Star key={i} sx={{ color: '#f69f29', fontSize: window.innerWidth < 768 ? '1rem' : '1.5rem' }} />
+                                ))}
+                                {[...Array(5 - review.reviewScore)].map((_, i) => (
+                                    <StarBorder key={i} sx={{ color: '#f69f29', fontSize: window.innerWidth < 768 ? '1rem' : '2rem' }} />
+                                ))}
+                                    </div>
+                                    </div>
+
                                 <p>{review.reviewText}</p>
                             </div>
                         ))
                     ) : (
-                        <p>No reviews yet.</p>
+                        <p>Loading reviews...</p>
                     )}
                 </div>
             </div>

@@ -17,7 +17,7 @@ const SinglePage = async ({ params }) => {
   if (!products.items[0]) {
     return notFound();
   }
-
+console.log(products.items[0])
   const product = products.items[0];
   const variants = await wixClient.products.queryProductVariants(product._id);
 
