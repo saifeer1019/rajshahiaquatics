@@ -76,7 +76,7 @@ const ProductList = async ({
 
   // Fetch reviews for each product
   const fetchReviews = async (productId) => {
-    const response = await fetch(`http://localhost:3000/api/reviews/${productId}`);
+ const response = await fetch(`https://rajshahiaquatics.com/api/reviews/${productId}`);
     if (response.ok) {
       const data = await response.json();
       return data; // Return the reviews data
