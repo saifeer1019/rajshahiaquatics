@@ -202,7 +202,7 @@ const SinglePageClient = ({ product, variants }) => {
                             </div>
                         ))
                     ) : (
-                        <p>Loading reviews...</p>
+                        <p>No reviews yet</p>
                     )}
                 </div>
             </div>
