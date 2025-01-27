@@ -75,39 +75,37 @@ const ProductList = async ({
   const res = await productQuery.find();
 
   // Fetch reviews for each product
-  const fetchReviews = async (productId) => {
- const response = await fetch(`https://rajshahiaquatics.com/api/reviews/${productId}`);
-    if (response.ok) {
-      const data = await response.json();
-      return data; // Return the reviews data
-    } else {
-      console.error('Failed to fetch reviews for product ID:', productId);
-      return [];
-    }
-  };
+//   const fetchReviews = async (productId) => {
+//  const response = await fetch(`https://rajshahiaquatics.com/api/reviews/${productId}`);
+//     if (response.ok) {
+//       const data = await response.json();
+//       return data; // Return the reviews data
+//     } else {
+//       console.error('Failed to fetch reviews for product ID:', productId);
+//       return [];
+//     }
+//   };
 
   // Fetch reviews for all products
-  const reviewsData = await Promise.all(
-    res.items.map(async (product) => {
-      const reviews = await fetchReviews(product._id);
-      return { productId: product._id, reviews };
-    })
-  );
+  // const reviewsData = await Promise.all(
+  //   res.items.map(async (product) => {
+  //     const reviews = await fetchReviews(product._id);
+  //     return { productId: product._id, reviews };
+  //   })
+  // );
 
   // Create a map of reviews for easy access
-  const reviewsMap = reviewsData.reduce((acc, { productId, reviews }) => {
-    acc[productId] = reviews;
-    return acc;
-  }, {});
+  // const reviewsMap = reviewsData.reduce((acc, { productId, reviews }) => {
+  //   acc[productId] = reviews;
+  //   return acc;
+  // }, {});
 
   return (
     <div className="mt-12 flex gap-x-8 gap-y-16 flex-start flex-wrap">
 
       {res.items.map((product) => {
-        const productReviews = reviewsMap[product._id] || [];
-        const averageRating = productReviews.length > 0
-          ? productReviews.reduce((acc, review) => acc + review.reviewScore, 0) / productReviews.length
-          : 0;
+
+      
 
         return (
           <div className="w-full flex flex-col gap-4 sm:w-[45%] lg:w-[22%]" key={product._id}>
@@ -151,13 +149,13 @@ const ProductList = async ({
               {/* Reviews Bar */}
               <div className="flex items-center mt-1">
                 {Array.from({ length: 5 }, (_, index) => (
-                  index < Math.round(averageRating) ? (
+                  index < Math.round(0) ? (
                     <Star key={index} sx={{ color: '#f69f29' }} />
                   ) : (
                     <StarBorder key={index} sx={{ color: '#f69f29' }} />
                   )
                 ))}
-                <span className="ml-2 text-sm">({productReviews.length} reviews)</span>
+                <span className="ml-2 text-sm">(0 reviews)</span>
               </div>
             </Link>
             <AddToCart
