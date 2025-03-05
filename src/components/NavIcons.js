@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import { setCartItems } from '../redux/cartSlice'; 
 import { useDispatch, useSelector } from 'react-redux';
 import { useWixClient } from "../hooks/useWixClient";
@@ -19,7 +19,7 @@ import Notification from "./Notifications";
 
 const NavIcons = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // New state for dropdown
-
+  const cartRef = useRef(null); // Reference for the cart
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
@@ -32,7 +32,21 @@ const cartItems = useSelector((state) => state.cart.cartItems);
 useEffect(() => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
 }, [cartItems]);
+useEffect(() => {
+  function handleClickOutside(event) {
+    if (cartRef.current && !cartRef.current.contains(event.target)) {
+      setIsCartOpen(false);
+    }
+  }
 
+  if (isCartOpen) {
+    document.addEventListener("mousedown", handleClickOutside);
+  }
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [isCartOpen]);
 
   const router = useRouter();
   const pathName = usePathname();
@@ -102,7 +116,8 @@ useEffect(() => {
         )}
 
       </div>
-      {isCartOpen && <Cart />}
+      {isCartOpen && <div ref={cartRef}> <Cart />
+    </div>}
 
 
      

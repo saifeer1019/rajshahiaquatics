@@ -7,7 +7,9 @@ import { setCartItems } from '../redux/cartSlice'; // Import the setCartItems ac
 
 const Checkout = () => {
     const dispatch = useDispatch();
+
     const cartItems = useSelector((state) => state.cart.cartItems);
+    const[ordering,setOrdering] = useState(false)
     const [isMounted, setIsMounted] = useState(false); // Track if the component has mounted
     const [paymentMethod, setPaymentMethod] = useState('cash'); // Track selected payment method
     const [orderConfirmed, setOrderConfirmed] = useState(false); // Track if the order is confirmed
@@ -69,7 +71,7 @@ const Checkout = () => {
     
         // Send order data to the backend
         try {   
-
+            setOrdering(true)
             const result = await createOrder({ orderData: orderData });
             
             // Check if the order was successfully created
@@ -168,9 +170,9 @@ const Checkout = () => {
                 </div>
                 <button
                     type="submit"
-                    className="w-full bg-lama text-white py-2 rounded-md hover:bg-lama-dark"
+                    className={`w-full ${!ordering ? 'bg-lama' :'bg-red-200'} ${!ordering ? 'text-white' :'text-slate-500'} py-2 rounded-md hover:bg-lama-dark`}
                 >
-                    {paymentMethod === 'bkash' ? 'Pay Now and Complete Order' : 'Complete Order'}
+                    {ordering ? 'Please wait' : 'Complete Order'}
                 </button>
             </form>
             </>
