@@ -1,58 +1,19 @@
-import { Model, DataTypes } from 'sequelize';
-import sequelize from '@/lib/sequelize'; // Adjust the path to your Sequelize instance
+import mongoose from 'mongoose';
 
-class Order extends Model {}
-
-Order.init({
-    Name: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-    },
-    Address: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-    },
-    City: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-    },
-    Phone: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-    },
-    'Payment Method': { // Use quotes to handle spaces in column names
-        type: DataTypes.TEXT,
-        allowNull: false,
-    },
-    'Payment Status': { // Use quotes to handle spaces in column names
-        type: DataTypes.TEXT,
-        allowNull: false,
-    },
-    'Product Name': { // Use quotes to handle spaces in column names
-        type: DataTypes.TEXT,
-        allowNull: false,
-    },
-    Price: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-    },
-    Quantity: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-    },
-    'Order Date': { // Use quotes to handle spaces in column names
-        type: DataTypes.DATE,
-        allowNull: false,
-    },
-    OrderId: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-    },
-}, {
-    sequelize, // Pass the sequelize instance
-    modelName: 'Order',
-    tableName: 'Orders', // Ensure this matches your table name
-    timestamps: false, // Set to true if you want createdAt and updatedAt fields
+const orderSchema_ = new mongoose.Schema({
+    Name: { type: String, required: true },
+    Address: { type: String, required: true },
+    City: { type: String, required: true },
+    Phone: { type: String, required: true },
+    PaymentMethod: { type: String, required: true },
+    PaymentStatus: { type: String, required: true },
+    ProductName: { type: String, required: true },
+    Price: { type: String, required: true },
+    Quantity: { type: Number, required: true },
+    OrderDate: { type: Date, required: true },
+    OrderId: { type: String, required: true },
 });
 
-export default Order;
+
+const Order_ = mongoose.models.Order_ || mongoose.model('Order_', orderSchema_);
+export default Order_;

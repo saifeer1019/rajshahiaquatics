@@ -6,6 +6,7 @@ import Skeleton from "../../components/Skeleton";
 import { wixClientServer } from "../../lib/wixClientServer";
 import Image from "next/image";
 import { Suspense } from "react";
+import Loading from '@/components/Loading';
 
 const ListPage = async ({ searchParams }) => {
   const wixClient = await wixClientServer();
@@ -27,7 +28,7 @@ const ListPage = async ({ searchParams }) => {
   }
 
   return (
-    <Suspense fallback={<div>Loading product details...</div>}>
+    <Suspense fallback={<Loading />}>
     <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64 relative">
       {/* CAMPAIGN */}
       <div className="hidden bg-pink-50 px-4 sm:flex justify-between h-64">
@@ -48,7 +49,7 @@ const ListPage = async ({ searchParams }) => {
       <Filter />
       {/* PRODUCTS */}
       <h1 className="mt-12 text-xl font-semibold">{cat?.collection?.name} For You!</h1>
-      <Suspense fallback={<Skeleton />}>
+      <Suspense fallback={<Loading />}>
         <ProductList
           categoryId={cat.collection?._id || "00000000-000000-000000-000000000001"}
           searchParams={searchParams}

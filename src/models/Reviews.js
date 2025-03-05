@@ -1,43 +1,35 @@
-// models/Review.js
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../lib/sequelize'); // Adjust the path as necessary
+import mongoose from 'mongoose';
 
-class Review extends Model {}
-
-Review.init({
+const reviewSchema = new mongoose.Schema({
     userEmail: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: String,
+        required: true,
     },
     userName: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: String,
+        required: true,
     },
     productId: {
-        type: DataTypes.STRING, // Assuming product._id is a string
-        allowNull: false,
+        type: String, // Assuming product._id is stored as a string (can be changed to mongoose.Schema.Types.ObjectId if needed)
+        required: true,
     },
     productName: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: String,
+        required: true,
     },
     reviewScore: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-            min: 1,
-            max: 5,
-        },
+        type: Number,
+        required: true,
+        min: 1,
+        max: 5,
     },
     reviewText: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-    },
+        type: String,
+        default: '',
+    }
 }, {
-    sequelize,
-    modelName: 'Review',
-    tableName: 'reviews', // Name of the table in the database
-    timestamps: true, // Adds createdAt and updatedAt fields
+    timestamps: true // This adds createdAt and updatedAt fields
 });
 
-module.exports = Review;
+const Review = mongoose.model('Review', reviewSchema);
+export default Review;

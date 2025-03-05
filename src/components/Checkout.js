@@ -1,4 +1,5 @@
 "use client";
+import { createOrder } from '@/lib/actions/order.actions';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image'; 
@@ -54,12 +55,12 @@ const Checkout = () => {
             Address: event.target.address.value,
             City: event.target.city.value,
             Phone: event.target.phone.value,
-            'Payment Method': paymentMethod, // Ensure this matches the model
-            'Payment Status': paymentMethod === 'bkash' ? 'Pending' : 'Not Confirmed', // Ensure this matches the model
-            'Product Name': cartItems.map(item => `${item.productName} (${item.variant})`).join(', '), // Ensure this matches the model
+            'PaymentMethod': paymentMethod, // Ensure this matches the model
+            'PaymentStatus': paymentMethod === 'bkash' ? 'Pending' : 'Not Confirmed', // Ensure this matches the model
+            'ProductName': cartItems.map(item => `${item.productName} (${item.variant})`).join(', '), // Ensure this matches the model
             Price: totalPrice.toFixed(2), // Total price as a string
             Quantity: cartItems.reduce((total, item) => total + item.quantity, 0), // Total quantity
-            'Order Date': new Date(), // Ensure this matches the model
+            'OrderDate': new Date(), // Ensure this matches the model
             OrderId: orderId,
         };
     
@@ -67,21 +68,17 @@ const Checkout = () => {
         console.log('Order Data:', orderData);
     
         // Send order data to the backend
-        try {
-            const response = await fetch('/api/orders', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(orderData),
-            });
-    
-            if (response.ok) {
+        try {   
+
+            const result = await createOrder({ orderData: orderData });
+            
+            // Check if the order was successfully created
+            if (result) {
                 setOrderConfirmed(true);
-                dispatch(setCartItems([])); // Clear cart after successful order
-            } else {
-                console.error('Failed to submit order:', response.statusText);
-            }
+                // Optional: Clear the cart after successful order
+                dispatch(setCartItems([]));
+                localStorage.removeItem('cartItems');}
+          
         } catch (error) {
             console.error('Error submitting order:', error);
         }

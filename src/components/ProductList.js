@@ -10,6 +10,9 @@ import AddToCart from "./AddToCart";
 import Star from '@mui/icons-material/Star'; // Import filled star icon
 import StarBorder from '@mui/icons-material/StarBorder'; // Import unfilled star icon
 
+
+
+
 const PRODUCT_PER_PAGE = 8;
 
 const ProductList = async ({
@@ -117,7 +120,9 @@ const ProductList = async ({
                   fill
                   sizes="25vw"
                   className="absolute object-cover rounded-md z-10 hover:opacity-0 transition-opacity easy duration-500"
-                />
+                  placeholder="blur"
+                  blurDataURL="/product.png" // Low-quality placeholder image
+                  />
                 {product.media?.items && (
                   <Image
                     src={product.media?.items[1]?.image?.url || "/product.png"}
@@ -129,7 +134,7 @@ const ProductList = async ({
                 )}
               </div>
               <div className="flex justify-between mt-2">
-                <span className="font-medium">{product.name}</span>
+              <span className="font-medium truncate whitespace-nowrap block w-[70%]">{product.name}</span>  
                 <span className="font-semibold">Tk. {product.price?.price}</span>
               </div>
 

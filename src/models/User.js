@@ -1,17 +1,18 @@
-   // models/User.js
-   import { DataTypes } from 'sequelize'; // Use ES6 import if your project supports it
-   import sequelize from '../lib/sequelize'; // Ensure this path is correct
+import mongoose from 'mongoose';
 
-   const User = sequelize.define('User', {
-     name: {
-       type: DataTypes.STRING,
-       allowNull: false,
-     },
-     email: {
-       type: DataTypes.STRING,
-       unique: true,
-       allowNull: false,
-     },
-   });
+const userSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        unique: true,
+        required: true,
+    }
+}, {
+    timestamps: true // Optional, if you want createdAt and updatedAt fields like Sequelize
+});
 
-   export default User;
+const User = mongoose.model('User', userSchema);
+export default User;
