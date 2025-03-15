@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { setCartItems } from '../redux/cartSlice'; 
 import Link from 'next/link';
 
-export default function Cart() {
+export default function Cart({isCartOpen, setIsCartOpen}) {
     const dispatch = useDispatch();
     const cartItems = useSelector((state) => state.cart.cartItems);
 
@@ -33,6 +33,9 @@ export default function Cart() {
         const updatedCartItems = cartItems.filter(item => !(item.productName === productName && item.variant === variant));
         dispatch(setCartItems(updatedCartItems)); // Update the cart in Redux
     };
+    const handleClose = () =>{
+        setIsCartOpen(false)
+    }
 
     return (
         <div className="w-96 h-[50vh] absolute p-4 rounded-md shadow-[0_3px_10px_rgb(0,0,0,0.2)]  bg-white top-12 right-16 flex flex-col z-20">
@@ -85,10 +88,11 @@ export default function Cart() {
                     Shipping and taxes calculated at checkout.
                 </p>
                 <div className="flex justify-end text-sm">
-                    <Link href="/checkout">
+                    <Link href="/checkout" onClick={handleClose}>
                         <button
                             className="rounded-md py-3 px-4 bg-black text-white disabled:cursor-not-allowed disabled:opacity-75"
-                        >
+                      
+                            >
                             Checkout
                         </button>
                     </Link>

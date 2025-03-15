@@ -116,7 +116,7 @@ useEffect(() => {
         )}
 
       </div>
-      {isCartOpen && <div ref={cartRef}> <Cart />
+      {isCartOpen && <div ref={cartRef}> <Cart setIsCartOpen={setIsCartOpen} isCartOpen={isCartOpen} />
     </div>}
 
 
